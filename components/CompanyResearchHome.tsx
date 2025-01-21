@@ -40,6 +40,7 @@ import ModelSelector from './ModelSelector';
 import { Model } from '@/lib/kamiwaza/models';
 import { signOut } from '@/lib/auth/auth';
 import { KamiwazaUser } from '@/lib/auth/types';
+import { generateResearchMarkdown, downloadMarkdown } from '@/lib/markdown';
 
 interface LinkedInData {
   text: string;
@@ -893,6 +894,31 @@ export default function CompanyResearcher() {
     window.location.href = '/login';
   };
 
+  const handleDownload = () => {
+    if (!companyUrl) return;
+
+    const researchData = {
+      linkedinData,
+      companySummary,
+      competitors,
+      news,
+      twitterProfileText,
+      youtubeVideos,
+      redditPosts,
+      githubUrl,
+      tiktokData,
+      fundingData,
+      financialReport,
+      crunchbaseData,
+      pitchbookData,
+      tracxnData,
+      companyMap,
+    };
+
+    const markdownContent = generateResearchMarkdown(companyUrl, researchData);
+    downloadMarkdown(companyUrl, markdownContent);
+  };
+
   return (
     <div className="w-full max-w-5xl p-6 z-10 mb-20 mt-6">
       <h1 className="md:text-6xl text-4xl pb-5 font-medium opacity-0 animate-fade-up [animation-delay:200ms]">
@@ -929,6 +955,16 @@ export default function CompanyResearcher() {
         >
           {isGenerating ? 'Researching...' : 'Research Now'}
         </button>
+
+        {!isGenerating && (linkedinData || companySummary || competitors || news) && (
+          <button
+            type="button"
+            onClick={handleDownload}
+            className="w-full bg-secondary-brand text-white font-semibold px-2 py-2 rounded-sm transition-all hover:bg-secondary-brand-dark ring-2 ring-secondary-brand"
+          >
+            Download Research as Markdown
+          </button>
+        )}
 
         <div className="flex items-center justify-end gap-2 sm:gap-3 pt-4 opacity-0 animate-fade-up [animation-delay:1000ms]">
           <span className="text-gray-800">Powered by</span>

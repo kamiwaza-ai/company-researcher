@@ -7,6 +7,11 @@ const nextConfig = {
         hostname: 'media.licdn.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'site-assets.plasmic.app',
+        pathname: '/**',
+      },
     ],
   },
 };
