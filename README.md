@@ -1,7 +1,7 @@
 # 🔎 Company Researcher
 ### Powered by [Exa.ai](https://exa.ai) for search engine and [Kamiwaza.ai](https://www.kamiwaza.ai) for model inference
 
-![Screenshot](https://companyresearcher.exa.ai/opengraph-image.jpg)
+![Screenshot](https://github.com/kamiwaza-ai/company-researcher/blob/main/public/screenshot.png)
 
 <br>
 
@@ -141,6 +141,21 @@ This project is powered by [Exa.ai](https://exa.ai), a powerful search engine an
 
 <br>
 
+## 🤖 About [Kamiwaza.ai](https://www.kamiwaza.ai)
+
+The AI capabilities of this project are powered by [Kamiwaza.ai](https://www.kamiwaza.ai), a production-ready AI inference platform. Kamiwaza provides:
+
+* Secure and scalable model inference
+* Built-in authentication and user management
+* High-performance AI model deployment
+* Cost-effective inference solutions
+* Enterprise-grade reliability
+
+[Learn more about Kamiwaza](https://www.kamiwaza.ai)
+
+<br>
+
 ---
 
-Built with ❤️ by team Exa
+Built with ❤️ by team Exa  
+Modified and enhanced for Kamiwaza integration by the Kamiwaza team
