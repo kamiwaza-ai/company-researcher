@@ -1,7 +1,7 @@
 // CompanyResearchHome.tsx
 
 "use client";
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import LinkedInDisplay from "./linkedin/LinkedinDisplay";
 import CompetitorsDisplay from "./competitors/CompetitorsDisplay";
 import NewsDisplay from "./news/NewsDisplay";
@@ -36,6 +36,10 @@ import {
 } from "./skeletons/ResearchSkeletons";
 import CompanyMindMap from './mindmap/CompanyMindMap';
 import Link from "next/link";
+import ModelSelector from './ModelSelector';
+import { Model } from '@/lib/kamiwaza/models';
+import { signOut } from '@/lib/auth/auth';
+import { KamiwazaUser } from '@/lib/auth/types';
 
 interface LinkedInData {
   text: string;
@@ -125,6 +129,16 @@ export default function CompanyResearcher() {
   const [tracxnData, setTracxnData] = useState<any>(null);
   const [founders, setFounders] = useState<Founder[] | null>(null);
   const [companyMap, setCompanyMap] = useState<CompanyMapData | null>(null);
+  const [selectedModel, setSelectedModel] = useState<Model | null>(null);
+  const [user, setUser] = useState<KamiwazaUser | null>(null);
+
+  useEffect(() => {
+    // Fetch user info when component mounts
+    fetch('/api/auth/me')
+      .then(res => res.json())
+      .then(data => setUser(data))
+      .catch(console.error);
+  }, []);
 
   // Function to check if a string is a valid URL
   const isValidUrl = (url: string): boolean => {
@@ -189,7 +203,10 @@ export default function CompanyResearcher() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ websiteurl: url }),
+        body: JSON.stringify({ 
+          websiteurl: url,
+          modelId: selectedModel?.id
+        }),
       });
 
       if (!response.ok) {
@@ -740,6 +757,17 @@ export default function CompanyResearcher() {
   const handleResearch = async (e: FormEvent) => {
     e.preventDefault();
 
+    if (!selectedModel) {
+      setErrors({ form: "Please select a model first" });
+      return;
+    }
+
+    console.log('Selected Model for Research:', {
+      id: selectedModel.id,
+      label: selectedModel.label,
+      deployment: selectedModel.deployment
+    });
+
     if (!companyUrl) {
       setErrors({ form: "Please enter a company URL" });
       return;
@@ -856,6 +884,15 @@ export default function CompanyResearcher() {
     }
   };
 
+  const handleModelSelect = (model: Model) => {
+    setSelectedModel(model);
+  };
+
+  const handleLogout = async () => {
+    await signOut();
+    window.location.href = '/login';
+  };
+
   return (
     <div className="w-full max-w-5xl p-6 z-10 mb-20 mt-6">
       <h1 className="md:text-6xl text-4xl pb-5 font-medium opacity-0 animate-fade-up [animation-delay:200ms]">
@@ -866,6 +903,13 @@ export default function CompanyResearcher() {
       <p className="text-black mb-12 opacity-0 animate-fade-up [animation-delay:400ms]">
         Enter a company URL for detailed research info. Instantly know any company inside out.
       </p>
+
+      <div className="opacity-0 animate-fade-up [animation-delay:500ms]">
+        <ModelSelector 
+          onModelSelect={handleModelSelect}
+          className="mb-6"
+        />
+      </div>
 
       <form onSubmit={handleResearch} className="space-y-6 mb-20">
         <input
@@ -893,6 +937,15 @@ export default function CompanyResearcher() {
             className="hover:opacity-80 transition-opacity"
           >
             <img src="/exa_logo.png" alt="Exa Logo" className="h-6 sm:h-7 object-contain" />
+          </a>
+          <span className="text-gray-800">and</span>
+          <a 
+            href="https://kamiwaza.ai" 
+            target="_blank" 
+            rel="origin"
+            className="hover:opacity-80 transition-opacity"
+          >
+            <img src="/kamiwaza_words_logo.png" alt="Kamiwaza Logo" className="h-6 sm:h-7 object-contain" />
           </a>
         </div>
       </form>
@@ -1086,27 +1139,35 @@ export default function CompanyResearcher() {
       </div>
       <div className="flex-grow"></div>
         <footer className="fixed bottom-0 left-0 right-0 w-full py-4 bg-secondary-default border-t opacity-0 animate-fade-up [animation-delay:1200ms]">
-          <div className="max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-center sm:gap-6 px-4">
-            <Link 
-              href="https://github.com/exa-labs/company-researcher"
-              target="_blank"
-              rel="origin"
-              className="text-gray-600 hover:underline cursor-pointer text-center"
-            >
-              Clone this open source project here
-            </Link>
-            <span className="text-gray-400 hidden sm:inline">|</span>
-            <Link 
+          <div className="max-w-5xl mx-auto flex flex-row items-center px-4 relative">
+            <div className="absolute left-0 flex items-center gap-4">
+              {user && (
+                <span className="text-gray-600">
+                  {user.username}
+                </span>
+              )}
+              <button
+                onClick={handleLogout}
+                className="text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                Logout
+              </button>
+            </div>
+            <div className="flex-1 flex justify-center">
+              <Link 
                 href="https://exa.ai" 
                 target="_blank" 
                 rel="origin"
                 className="hover:opacity-80 transition-opacity hidden sm:inline"
               >
-            <div className="flex items-center gap-2">
-              <span className="text-gray-600 hover:text-gray-600 hover:underline">Powered by</span>
-                <img src="/exa_logo.png" alt="Exa Logo" className="h-5 object-contain" />
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-600 hover:text-gray-600 hover:underline">Powered by</span>
+                  <img src="/exa_logo.png" alt="Exa Logo" className="h-5 object-contain" />
+                  <span className="text-gray-600">and</span>
+                  <img src="/kamiwaza_words_logo.png" alt="Kamiwaza Logo" className="h-5 object-contain" />
+                </div>
+              </Link>
             </div>
-            </Link>
           </div>
         </footer>
     </div>  
