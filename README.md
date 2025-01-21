@@ -1,5 +1,5 @@
 # 🔎 Company Researcher
-### Powered by [Exa.ai](https://exa.ai) - The Search Engine for AI Applications
+### Powered by [Exa.ai](https://exa.ai) for search engine and [Kamiwaza.ai](https://www.kamiwaza.ai) for model inference
 
 ![Screenshot](https://companyresearcher.exa.ai/opengraph-image.jpg)
 
@@ -48,7 +48,8 @@ Company Researcher is a free and open-source tool that helps you instantly under
 - **Search Engine**: [Exa.ai](https://exa.ai) - Web search API optimized for AI applications
 - **Frontend**: [Next.js](https://nextjs.org/docs) with App Router, [TailwindCSS](https://tailwindcss.com), TypeScript
 - **AI Integration**: [Vercel AI SDK](https://sdk.vercel.ai/docs/ai-sdk-core)
-- **Hosting**: [Vercel](https://vercel.com/)
+- **Model Inference**: [Kamiwaza.ai](https://www.kamiwaza.ai)
+- **Authentication**: [Kamiwaza.ai](https://www.kamiwaza.ai)
 
 <br>
 
@@ -57,7 +58,7 @@ Company Researcher is a free and open-source tool that helps you instantly under
 ### Prerequisites
 - Node.js
 - Exa.ai API key
-- Anthropic API key
+- Kamiwaza Deployment URI
 - (Optional) YouTube API key
 - (Optional) GitHub token
 
@@ -91,9 +92,9 @@ yarn dev
 
 ## 🔑 API Keys & Environment Setup
 
-### Required API Keys
+### Required API Keys & Configuration
 * **Exa API Key**: Get from [Exa Dashboard](https://dashboard.exa.ai/api-keys)
-* **Anthropic API Key**: Get from [Anthropic Console](https://console.anthropic.com/)
+* **Kamiwaza URI**: Provided by your Kamiwaza deployment
 
 ### Optional API Keys (for additional features)
 * **YouTube API Key**: Get from [Google Cloud Console](https://console.cloud.google.com/apis/credentials) (for YouTube video fetching)
@@ -108,7 +109,8 @@ Create a `.env.local` file in the root directory with the following structure:
 ```env
 # Required
 EXA_API_KEY=your_exa_api_key
-ANTHROPIC_API_KEY=your_anthropic_api_key
+KAMIWAZA_URI=https://prod.kamiwaza.ai/api
+NEXT_PUBLIC_KAMIWAZA_URI=https://prod.kamiwaza.ai/api
 
 # Optional - for additional features
 YOUTUBE_API_KEY=your_youtube_api_key
