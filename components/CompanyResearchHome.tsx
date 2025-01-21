@@ -896,7 +896,7 @@ export default function CompanyResearcher() {
   return (
     <div className="w-full max-w-5xl p-6 z-10 mb-20 mt-6">
       <h1 className="md:text-6xl text-4xl pb-5 font-medium opacity-0 animate-fade-up [animation-delay:200ms]">
-        <span className="text-brand-default"> Company </span>
+        <span className="bg-gradient-to-br from-brand-default via-brand-muted to-secondary-brand bg-clip-text text-transparent"> Company </span>
         Researcher
       </h1>
 
@@ -921,8 +921,10 @@ export default function CompanyResearcher() {
         <button
           type="submit"
           className={`w-full text-white font-semibold px-2 py-2 rounded-sm transition-opacity opacity-0 animate-fade-up [animation-delay:800ms] min-h-[50px] ${
-            isGenerating ? 'bg-gray-400' : 'bg-brand-default ring-2 ring-brand-default'
-          } transition-colors`}
+            isGenerating 
+              ? 'bg-gray-400' 
+              : 'bg-gradient-to-br from-brand-default via-brand-muted to-secondary-brand hover:from-brand-dark hover:via-brand-muted hover:to-secondary-brand-dark ring-2 ring-brand-default'
+          } transition-all`}
           disabled={isGenerating}
         >
           {isGenerating ? 'Researching...' : 'Research Now'}
